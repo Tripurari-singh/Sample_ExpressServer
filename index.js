@@ -1,49 +1,57 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+const todos = [
+  {
+    id: 1,
+    title: "Learn Express",
+    description: "Understand routing and middleware",
+    priority: "High",
+    completed: false,
+    createdAt: "2026-02-23"
+  },
+  {
+    id: 2,
+    title: "Build REST API",
+    description: "Create endpoints for CRUD operations",
+    priority: "Medium",
+    completed: true,
+    createdAt: "2026-02-20"
+  },
+  {
+    id: 3,
+    title: "Deploy on EC2",
+    description: "Run Node server on Ubuntu instance",
+    priority: "High",
+    completed: false,
+    createdAt: "2026-02-22"
+  },
+  {
+    id: 4,
+    title: "Learn DevOps basics",
+    description: "Process management and ports",
+    priority: "Low",
+    completed: false,
+    createdAt: "2026-02-18"
+  },
+  {
+    id: 5,
+    title: "Practice API testing",
+    description: "Use curl and Postman",
+    priority: "Medium",
+    completed: true,
+    createdAt: "2026-02-19"
+  }
+];
 
-let todos = []; // In-memory storage
-
-// Home
-app.get('/', (req, res) => {
-  res.send('Simple Todo API is running ');
+app.get("/", (req, res) => {
+  res.send("Todo server is running");
 });
 
-// Get all todos
-app.get('/todos', (req, res) => {
+app.get("/todos", (req, res) => {
   res.json(todos);
 });
 
-// Add a todo
-app.post('/todos', (req, res) => {
-  const { title } = req.body;
-  if (!title) return res.status(400).json({ error: "Title is required" });
-
-  const todo = { id: Date.now(), title, completed: false };
-  todos.push(todo);
-  res.status(201).json(todo);
-});
-
-// Toggle todo completed
-app.patch('/todos/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const todo = todos.find(t => t.id === id);
-  if (!todo) return res.status(404).json({ error: "Todo not found" });
-
-  todo.completed = !todo.completed;
-  res.json(todo);
-});
-
-// Delete todo
-app.delete('/todos/:id', (req, res) => {
-  const id = Number(req.params.id);
-  todos = todos.filter(t => t.id !== id);
-  res.json({ message: "Todo deleted " });
-});
-
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server is running: http://localhost:${PORT}`);
+app.listen(3000, "0.0.0.0", () => {
+  console.log("Server running on port 3000");
 });
